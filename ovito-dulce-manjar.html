@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ovito Dulce Manjar – Sistema Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* ── PALETA RENOVADA ── */
+  --gold:#b8862a;
+  --gold-light:#d4a84b;
+  --gold-lighter:#e8c97a;
+  --gold-dark:#7a5a18;
+  --gold-bg:#fdf6e3;
+
+  --cream:#fefcf9;
+  --surface:#f7f2ec;
+  --surface2:#efe8df;
+  --border:#e2d8ce;
+
+  --brown:#2e1a0e;
+  --brown-light:#5a2e14;
+  --brown-soft:#8b5e3c;
+  --brown-mid:#7e4f38;
+
+  --green-wa:#22c55e;
+  --green-wa-dark:#16a34a;
+  --green-wa-chat:#128c7e;
+
+  --white:#fff;
+  --gray-1:#faf6f0;
+  --gray-2:#e8ddd2;
+  --gray-3:#a08870;
+
+  --success:#2e8b57;
+  --success-bg:#edf7f2;
+  --warning:#b86e12;
+  --warning-bg:#fff4e2;
+  --danger:#c0392b;
+  --danger-bg:#fdf0ee;
+  --blue:#1a62b0;
+  --blue-bg:#edf3fc;
+  --purple:#7c3aed;
+  --purple-bg:#f5f0fe;
+
+  --sidebar:#1a0c04;
+  --phone-w:390px;
+  --phone-h:780px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--brown);
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 20%,rgba(184,134,42,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 80%,rgba(90,46,20,0.15) 0%,transparent 60%),
+    repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(184,134,42,0.02) 40px,rgba(184,134,42,0.02) 41px);
+  pointer-events:none;z-index:0;
+}
+
+/* ─── HEADER ─── */
+.header{
+  width:100%;max-width:1280px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 40px 14px;
+  position:relative;z-index:10;flex-wrap:wrap;gap:10px;
+}
+.brand{display:flex;align-items:center;gap:14px;}
+.brand-icon{
+  width:50px;height:50px;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold-dark));
+  border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:24px;box-shadow:0 4px 16px rgba(184,134,42,0.35);
+}
+.brand-text h1{font-family:'Playfair Display',serif;color:var(--gold-lighter);font-size:18px;line-height:1.1;}
+.brand-text span{color:var(--gray-3);font-size:10px;letter-spacing:.15em;text-transform:uppercase;}
+.nav-switcher{
+  display:flex;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(184,134,42,0.2);
+  border-radius:14px;padding:5px;gap:4px;
+  backdrop-filter:blur(10px);
+}
+.nav-btn{
+  padding:9px 18px;border:none;border-radius:10px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  transition:all .3s;display:flex;align-items:center;gap:7px;
+  color:var(--gray-3);background:transparent;
+}
+.nav-btn.active{
+  background:linear-gradient(135deg,var(--gold-light),var(--gold-dark));
+  color:var(--brown);font-weight:700;
+  box-shadow:0 4px 14px rgba(184,134,42,0.30);
+}
+.nav-btn:hover:not(.active){color:var(--gold-lighter);background:rgba(184,134,42,0.08);}
+
+/* ─── STAGE ─── */
+.stage{position:relative;z-index:5;width:100%;max-width:1280px;padding:0 20px 40px;}
+.view{display:none;animation:fadeIn .4s ease;}
+.view.active{display:flex;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.view-mobile{justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;padding-top:10px;}
+.view-empresa{justify-content:center;padding-top:10px;}
+
+/* ══════════════════
+   PHONE SHELL
+══════════════════ */
+.phone-shell{
+  width:var(--phone-w);height:var(--phone-h);
+  background:#0f0f0f;border-radius:52px;
+  border:6px solid #2a2a2a;
+  box-shadow:0 0 0 1px #444,0 30px 80px rgba(0,0,0,0.55),inset 0 0 0 1px #1a1a1a;
+  overflow:hidden;position:relative;flex-shrink:0;
+  display:flex;flex-direction:column;
+}
+.phone-pill{
+  width:110px;height:28px;background:#0f0f0f;
+  border-radius:0 0 18px 18px;
+  margin:0 auto;flex-shrink:0;
+  border:2px solid #2a2a2a;border-top:none;z-index:5;position:relative;
+}
+.phone-screen{flex:1;overflow:hidden;background:var(--cream);position:relative;display:flex;flex-direction:column;}
+
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  background:var(--cream);
+  transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .35s;
+  overflow:hidden;
+}
+.screen.hidden-right{transform:translateX(100%);opacity:0;pointer-events:none;}
+.screen.hidden-left{transform:translateX(-100%);opacity:0;pointer-events:none;}
+.screen.active{transform:translateX(0);opacity:1;}
+.screen-body{flex:1;overflow-y:auto;scrollbar-width:none;}
+.screen-body::-webkit-scrollbar{display:none;}
+
+/* App bar */
+.app-bar{
+  background:linear-gradient(135deg,var(--brown),var(--brown-light));
+  padding:12px 16px;
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+  position:relative;z-index:10;
+}
+.app-bar-back{
+  background:rgba(255,255,255,0.15);border:none;color:var(--white);
+  width:30px;height:30px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  flex-shrink:0;transition:background .2s;
+}
+.app-bar-back:hover{background:rgba(255,255,255,0.25);}
+.app-bar-logo{
+  width:34px;height:34px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold-dark));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;
+}
+.app-bar-title{color:var(--gold-lighter);font-weight:700;font-size:14px;}
+.app-bar-sub{color:rgba(232,201,122,0.55);font-size:9px;}
+
+/* ── SCREEN 1: Catálogo ── */
+.catalog-header{padding:12px 14px 6px;}
+.catalog-header-title{font-family:'Playfair Display',serif;font-size:14px;color:var(--brown);font-weight:700;}
+.catalog-header-sub{font-size:10px;color:var(--brown-soft);margin-top:2px;}
+
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 14px 14px;}
+.product-card{
+  background:var(--white);border-radius:13px;padding:10px;cursor:pointer;
+  border:2px solid transparent;transition:all .25s;
+  box-shadow:0 2px 8px rgba(46,26,14,0.08);
+}
+.product-card:hover{border-color:var(--gold-light);transform:translateY(-2px);}
+.product-card.selected{border-color:var(--gold);background:#fffbf2;}
+.product-emoji{
+  width:100%;height:68px;border-radius:9px;margin-bottom:6px;
+  background:linear-gradient(135deg,var(--gray-1),var(--surface2));
+  display:flex;align-items:center;justify-content:center;font-size:30px;
+}
+.product-name{font-size:10px;font-weight:700;color:var(--brown);line-height:1.3;}
+.product-desc{font-size:9px;color:var(--gray-3);margin-top:1px;line-height:1.4;}
+.product-price{font-size:12px;font-weight:700;color:var(--gold-dark);margin-top:4px;}
+
+.qty-row{display:flex;align-items:center;margin-top:6px;border:1.5px solid var(--gold);border-radius:8px;overflow:hidden;}
+.qty-btn{
+  width:26px;height:26px;border:none;background:var(--gold);color:var(--white);
+  font-size:15px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:'DM Sans',sans-serif;transition:background .2s;
+}
+.qty-btn:hover{background:var(--gold-dark);}
+.qty-input{
+  flex:1;text-align:center;font-size:12px;font-weight:700;color:var(--brown);
+  background:transparent;border:none;outline:none;padding:3px 0;
+  font-family:'DM Mono',monospace;
+}
+.qty-input::-webkit-inner-spin-button,.qty-input::-webkit-outer-spin-button{-webkit-appearance:none;}
+.select-btn{
+  width:100%;margin-top:5px;padding:4px;border-radius:7px;
+  border:1.5px solid var(--gold);background:transparent;color:var(--gold-dark);
+  font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;
+  font-family:'DM Sans',sans-serif;
+}
+.product-card.selected .select-btn{background:var(--gold);color:var(--white);}
+
+.cart-fab{
+  position:absolute;bottom:14px;right:14px;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold-dark));
+  border:none;border-radius:50px;
+  padding:10px 16px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:var(--white);
+  box-shadow:0 4px 16px rgba(184,134,42,0.45);
+  transition:all .25s;z-index:20;
+}
+.cart-fab:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(184,134,42,0.50);}
+.cart-count{
+  background:rgba(255,255,255,0.25);border-radius:50%;
+  width:20px;height:20px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:900;
+}
+
+/* ── SCREEN 2: Checkout ── */
+.checkout-body{padding:12px 14px 80px;}
+.checkout-card{background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(46,26,14,0.07);}
+.checkout-title{font-family:'Playfair Display',serif;font-size:13px;color:var(--brown);font-weight:700;margin-bottom:10px;}
+
+.cart-list{display:flex;flex-direction:column;gap:5px;margin-bottom:8px;}
+.cart-item-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--gray-1);border-radius:7px;padding:6px 9px;font-size:10px;color:var(--brown);
+}
+.ci-name{font-weight:600;flex:1;}
+.ci-qty{font-family:'DM Mono',monospace;font-weight:700;color:var(--brown-soft);margin:0 6px;}
+.ci-price{font-weight:700;color:var(--gold-dark);}
+.ci-del{background:none;border:none;color:var(--danger);cursor:pointer;font-size:12px;margin-left:5px;}
+.cart-total-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 9px;background:linear-gradient(135deg,#fff9ed,#fef3d0);
+  border-radius:8px;font-size:12px;font-weight:700;color:var(--brown);
+  border:1px solid rgba(184,134,42,0.25);margin-bottom:10px;
+}
+
+.form-field{margin-bottom:8px;}
+.form-label{font-size:9px;font-weight:700;color:var(--brown-soft);margin-bottom:3px;display:block;letter-spacing:.06em;text-transform:uppercase;}
+.form-input,.form-select,.form-textarea{
+  width:100%;padding:8px 11px;border-radius:9px;
+  border:1.5px solid var(--border);
+  font-family:'DM Sans',sans-serif;font-size:12px;color:var(--brown);
+  background:var(--gray-1);transition:border-color .2s;outline:none;
+  -webkit-appearance:none;appearance:none;
+}
+.form-textarea{resize:vertical;min-height:56px;font-size:11px;line-height:1.5;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);}
+.delivery-info{
+  background:var(--warning-bg);
+  border:1.5px solid rgba(184,110,18,0.30);border-radius:9px;padding:8px 11px;
+  font-size:10px;color:var(--brown);display:flex;align-items:center;gap:6px;margin-top:4px;
+}
+
+.btn-mis-pedidos{
+  width:100%;padding:10px;border-radius:10px;border:2px solid var(--gold);
+  background:transparent;color:var(--gold-dark);font-family:'DM Sans',sans-serif;
+  font-size:12px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all .25s;margin-bottom:8px;
+}
+.btn-mis-pedidos:hover{background:rgba(184,134,42,0.08);}
+
+.cta-wa{
+  width:100%;padding:13px;border-radius:11px;border:none;
+  background:linear-gradient(135deg,var(--green-wa),var(--green-wa-dark));
+  color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:all .25s;box-shadow:0 4px 16px rgba(34,197,94,0.30);
+}
+.cta-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(34,197,94,0.40);}
+.cta-wa:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* ── SCREEN 3: WhatsApp ── */
+.wa-screen{background:#0a1014;}
+.wa-topbar{
+  background:#1f2c34;padding:10px 14px;
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.wa-back-btn{background:none;border:none;color:#8696a0;cursor:pointer;font-size:16px;padding:2px;}
+.wa-avatar-sm{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.wa-info{flex:1;}
+.wa-contact-name{color:#e9edef;font-size:14px;font-weight:600;}
+.wa-contact-status{color:#8696a0;font-size:11px;}
+.wa-topbar-icons{display:flex;gap:14px;}
+.wa-icon-btn{background:none;border:none;color:#8696a0;cursor:pointer;font-size:16px;padding:2px;}
+
+.wa-messages{
+  flex:1;overflow-y:auto;padding:10px 10px 8px;
+  background:#0b141a;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  scrollbar-width:thin;scrollbar-color:#2a3942 transparent;
+  display:flex;flex-direction:column;
+}
+.wa-messages::-webkit-scrollbar{width:4px;}
+.wa-messages::-webkit-scrollbar-thumb{background:#2a3942;border-radius:2px;}
+
+.wa-date-divider{text-align:center;margin:8px 0;}
+.wa-date-chip{background:rgba(17,27,33,0.7);color:#8696a0;font-size:9px;padding:3px 10px;border-radius:8px;display:inline-block;}
+
+/* Bubble base */
+.wa-bubble{
+  max-width:82%;border-radius:8px;padding:7px 10px 4px;
+  font-size:11.5px;line-height:1.55;margin-bottom:4px;
+  position:relative;white-space:pre-wrap;word-break:break-word;
+}
+.wa-bubble.sent{
+  background:#005c4b;color:#e9edef;
+  align-self:flex-end;margin-left:auto;
+  border-radius:8px 8px 2px 8px;
+}
+.wa-bubble.received{
+  background:#202c33;color:#e9edef;
+  align-self:flex-start;
+  border-radius:8px 8px 8px 2px;
+}
+.wa-bubble .btime{
+  font-size:9px;color:rgba(233,237,239,0.5);
+  display:flex;align-items:center;justify-content:flex-end;gap:3px;margin-top:3px;
+}
+.wa-bubble .btime .ticks{font-size:10px;color:#53bdeb;}
+
+/* Rich message formatting inside WA bubble */
+.wa-bubble .msg-section{margin-bottom:7px;}
+.wa-bubble .msg-section:last-child{margin-bottom:0;}
+.wa-bubble .msg-header{
+  font-weight:700;font-size:12px;color:#e9edef;
+  border-bottom:1px solid rgba(255,255,255,0.10);
+  padding-bottom:3px;margin-bottom:5px;
+  display:flex;align-items:center;gap:5px;
+}
+.wa-bubble .msg-row{
+  display:flex;align-items:flex-start;gap:5px;
+  font-size:11px;color:rgba(233,237,239,0.85);
+  line-height:1.5;margin-bottom:3px;
+}
+.wa-bubble .msg-row .bullet{flex-shrink:0;margin-top:1px;}
+.wa-bubble .msg-pill{
+  display:inline-block;padding:3px 8px;border-radius:5px;
+  font-size:10px;font-weight:700;margin-top:4px;margin-right:3px;
+}
+.wa-bubble .msg-pill.green{background:rgba(34,197,94,0.18);color:#4ade80;}
+.wa-bubble .msg-pill.amber{background:rgba(251,191,36,0.18);color:#fcd34d;}
+.wa-bubble .msg-pill.blue{background:rgba(59,130,246,0.18);color:#93c5fd;}
+.wa-bubble .msg-highlight{
+  background:rgba(255,255,255,0.08);border-radius:6px;
+  padding:5px 8px;margin:5px 0;font-size:10.5px;
+  border-left:2px solid rgba(184,134,42,0.60);
+}
+.wa-bubble .msg-total{
+  background:rgba(0,0,0,0.25);border-radius:6px;
+  padding:6px 8px;margin-top:5px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;font-weight:700;
+}
+.wa-bubble .msg-divider{height:1px;background:rgba(255,255,255,0.08);margin:6px 0;}
+
+/* Image bubble */
+.wa-img-bubble{
+  background:#005c4b;border-radius:8px;overflow:hidden;
+  max-width:82%;display:block;margin-left:auto;margin-bottom:4px;
+  white-space:normal;word-break:break-word;
+  flex-shrink:0;align-self:flex-end;
+}
+.wa-img-bubble img{width:100%;max-height:160px;object-fit:cover;display:block;}
+.wa-img-bubble .img-caption{padding:5px 10px 4px;color:#e9edef;font-size:10px;}
+.wa-img-bubble .btime{font-size:9px;color:rgba(233,237,239,0.5);text-align:right;padding:0 8px 5px;}
+
+/* Input bar */
+.wa-input-bar{
+  background:#1f2c34;padding:6px 8px;
+  display:flex;align-items:flex-end;gap:7px;flex-shrink:0;
+}
+.wa-attach-btn{
+  background:none;border:none;color:#8696a0;cursor:pointer;
+  font-size:20px;padding:6px;transition:color .2s;flex-shrink:0;
+  position:relative;
+}
+.wa-attach-btn:hover{color:var(--green-wa);}
+.wa-attach-btn input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+.wa-input-wrap{
+  flex:1;background:#2a3942;border-radius:22px;
+  display:flex;align-items:flex-end;padding:6px 12px;gap:6px;
+}
+.wa-emoji-btn{background:none;border:none;color:#8696a0;cursor:pointer;font-size:18px;flex-shrink:0;}
+.wa-text-input{
+  flex:1;background:transparent;border:none;outline:none;
+  color:#e9edef;font-family:'DM Sans',sans-serif;font-size:12px;
+  resize:none;max-height:80px;min-height:18px;line-height:1.4;
+}
+.wa-text-input::placeholder{color:#8696a0;}
+.wa-send-btn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:var(--green-wa);color:var(--white);
+  font-size:17px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.wa-send-btn:hover{background:var(--green-wa-dark);}
+
+.typing-indicator{
+  display:none;align-items:center;gap:4px;padding:7px 12px;
+  background:#202c33;border-radius:8px 8px 8px 2px;
+  width:fit-content;margin-bottom:4px;align-self:flex-start;
+}
+.typing-indicator.show{display:flex;}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:#8696a0;animation:tdot 1.4s infinite;}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+/* Quick reply chips — dynamic */
+.quick-replies{
+  display:flex;gap:5px;flex-wrap:wrap;padding:6px 8px;
+  background:#111b21;border-top:1px solid rgba(255,255,255,0.04);
+  transition:all .3s;
+}
+.qr-chip{
+  background:#1f2c34;border:1px solid #2a3942;color:#00a884;
+  font-size:10px;font-weight:600;padding:5px 10px;border-radius:16px;
+  cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;
+  white-space:nowrap;animation:chipIn .25s ease;
+}
+@keyframes chipIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.qr-chip:hover{background:#2a3942;border-color:#00a884;}
+
+.payment-banner{
+  background:linear-gradient(135deg,#065f46,#047857);
+  padding:8px 14px;display:flex;align-items:center;gap:8px;
+  color:#d1fae5;font-size:11px;font-weight:600;flex-shrink:0;
+}
+
+/* ══════════════════
+   PANEL EXPLICATIVO
+══════════════════ */
+.explanation-panel{flex:1;min-width:240px;max-width:340px;display:flex;flex-direction:column;gap:12px;padding-top:10px;}
+.exp-card{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(184,134,42,0.16);
+  border-radius:14px;padding:18px;backdrop-filter:blur(8px);
+}
+.exp-icon{font-size:20px;margin-bottom:7px;}
+.exp-title{font-family:'Playfair Display',serif;color:var(--gold-lighter);font-size:13px;font-weight:700;margin-bottom:6px;}
+.exp-text{color:var(--gray-3);font-size:11px;line-height:1.7;}
+.tag{
+  display:inline-block;background:rgba(184,134,42,0.14);border:1px solid rgba(184,134,42,0.28);
+  border-radius:5px;padding:2px 7px;font-size:10px;color:var(--gold-lighter);font-weight:600;
+  margin-top:5px;margin-right:3px;
+}
+
+/* ══════════════════
+   VISTA EMPRESA
+══════════════════ */
+.empresa-screen-inner{background:var(--surface);height:calc(100% - 28px);overflow-y:auto;scrollbar-width:none;}
+.empresa-screen-inner::-webkit-scrollbar{display:none;}
+.empresa-topbar{background:var(--sidebar);padding:12px 16px;position:sticky;top:0;z-index:20;}
+.empresa-topbar-title{font-family:'Playfair Display',serif;color:var(--gold-lighter);font-size:13px;font-weight:700;}
+.empresa-topbar-sub{color:rgba(212,168,75,0.45);font-size:9px;margin-top:1px;}
+.empresa-kpis{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:10px;}
+.kpi{background:var(--white);border-radius:11px;padding:11px;box-shadow:0 2px 8px rgba(46,26,14,0.07);border-top:3px solid var(--gold);}
+.kpi.blue{border-top-color:var(--blue);}
+.kpi.green{border-top-color:var(--success);}
+.kpi.purple{border-top-color:var(--purple);}
+.kpi-label{font-size:8px;font-weight:700;color:var(--gray-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.kpi-value{font-family:'Playfair Display',serif;font-size:20px;color:var(--brown);font-weight:900;}
+.kpi-delta{font-size:8px;color:var(--success);margin-top:1px;font-weight:600;}
+.empresa-section{padding:0 10px 10px;}
+.empresa-section-label{font-size:9px;font-weight:700;color:var(--brown-soft);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;display:flex;align-items:center;gap:7px;}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--success);display:none;animation:pdot 1.5s infinite;}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.pedido-card{
+  background:var(--white);border-radius:11px;padding:11px 12px;margin-bottom:7px;
+  box-shadow:0 2px 8px rgba(46,26,14,0.07);transition:all .3s;
+}
+.pedido-card.nuevo{animation:highlightNew 2s ease;}
+@keyframes highlightNew{from{background:#fff8c4;box-shadow:0 0 0 2px var(--gold)}to{background:var(--white);box-shadow:0 2px 8px rgba(46,26,14,0.07)}}
+.pedido-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.pedido-id{font-family:'DM Mono',monospace;font-size:9px;color:var(--gray-3);}
+.pedido-hora{font-size:8px;color:var(--gray-3);}
+.pedido-nombre{font-size:12px;font-weight:700;color:var(--brown);}
+.pedido-prod{font-size:10px;color:var(--brown-soft);margin-top:1px;}
+.pedido-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:7px;}
+.pedido-total{font-size:13px;font-weight:900;color:var(--gold-dark);}
+.ciudad-chip{display:inline-flex;align-items:center;gap:3px;font-size:9px;padding:3px 8px;border-radius:20px;font-weight:600;}
+.ciudad-ibarra{background:var(--blue-bg);color:var(--blue);}
+.ciudad-tulcan{background:var(--purple-bg);color:var(--purple);}
+.status-badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:700;}
+.st-pagado{background:var(--success-bg);color:var(--success);}
+.st-pendiente{background:var(--warning-bg);color:var(--warning);}
+
+/* ══════════════════
+   MODALS
+══════════════════ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);z-index:800;
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(5px);
+}
+.modal-overlay.active{display:flex;}
+.pedidos-panel{
+  width:340px;max-height:85vh;background:var(--cream);
+  border-radius:22px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.5);
+  display:flex;flex-direction:column;animation:slideUp .35s ease;
+}
+@keyframes slideUp{from{transform:translateY(24px) scale(.96);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.pedidos-hdr{
+  background:linear-gradient(135deg,var(--brown),var(--brown-light));
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.pedidos-hdr-title{font-family:'Playfair Display',serif;color:var(--gold-lighter);font-size:15px;font-weight:700;}
+.pedidos-close{
+  background:rgba(255,255,255,0.15);border:none;color:var(--white);
+  width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+}
+.pedidos-body{overflow-y:auto;flex:1;padding:12px;}
+.pedido-hist-item{
+  background:var(--white);border-radius:11px;padding:11px 13px;margin-bottom:7px;
+  box-shadow:0 2px 8px rgba(46,26,14,0.07);border-left:4px solid var(--border);
+}
+.pedido-hist-item.pagado{border-left-color:var(--success);}
+.pedido-hist-item.pendiente{border-left-color:var(--warning);}
+.phi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
+.phi-num{font-family:'DM Mono',monospace;font-size:9px;color:var(--gray-3);}
+.phi-prod{font-size:11px;font-weight:700;color:var(--brown);}
+.phi-city{font-size:9px;color:var(--brown-soft);margin-top:1px;}
+.phi-total{font-size:13px;font-weight:900;color:var(--gold-dark);}
+.phi-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;margin-top:4px;}
+.badge-pagado{background:var(--success-bg);color:var(--success);}
+.badge-pendiente{background:var(--warning-bg);color:var(--warning);}
+.no-pedidos-msg{text-align:center;padding:36px 18px;color:var(--gray-3);font-size:12px;}
+
+.footer{position:relative;z-index:5;color:rgba(184,134,42,0.28);font-size:10px;letter-spacing:.1em;padding-bottom:22px;text-align:center;}
+
+@media(max-width:900px){.view-mobile{flex-direction:column;align-items:center;}.explanation-panel{max-width:390px;}.header{padding:14px 18px;}}
+@media(max-width:480px){:root{--phone-w:100%;--phone-h:720px;}.phone-shell{border-radius:28px;max-width:390px;}.nav-btn{padding:7px 10px;font-size:11px;}}
+
+/* WA FAB */
+.wa-fab{
+  position:fixed;bottom:28px;right:28px;z-index:500;
+  width:52px;height:52px;border-radius:50%;border:none;
+  background:var(--green-wa);color:var(--white);
+  font-size:24px;cursor:pointer;
+  box-shadow:0 4px 20px rgba(34,197,94,0.45);
+  display:none;align-items:center;justify-content:center;
+  transition:all .3s;animation:fabPop .4s cubic-bezier(.34,1.56,.64,1);
+}
+.wa-fab.visible{display:flex;}
+.wa-fab:hover{transform:scale(1.12);box-shadow:0 8px 28px rgba(34,197,94,0.55);}
+@keyframes fabPop{from{transform:scale(0)}to{transform:scale(1)}}
+.wa-fab-badge{
+  position:absolute;top:-3px;right:-3px;
+  background:var(--danger);color:var(--white);
+  width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--brown);
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">
+    <div class="brand-icon">🍮</div>
+    <div class="brand-text">
+      <h1>Ovito Dulce Manjar</h1>
+      <span>Sistema Digital · Valle del Chota</span>
+    </div>
+  </div>
+  <nav class="nav-switcher">
+    <button class="nav-btn active" onclick="switchView('mobile')" id="btn-mobile">📱 Cliente</button>
+    <button class="nav-btn" onclick="switchView('empresa')" id="btn-empresa">🏪 Empresa</button>
+  </nav>
+</header>
+
+<main class="stage">
+
+<!-- ════════════════════════════════
+     VISTA CLIENTE
+════════════════════════════════ -->
+<div class="view view-mobile active" id="view-mobile">
+
+  <div class="phone-shell">
+    <div class="phone-pill"></div>
+    <div class="phone-screen" id="phone-screen">
+
+      <!-- ── SCREEN 1: CATÁLOGO ── -->
+      <div class="screen active" id="screen-catalog">
+        <div class="app-bar">
+          <div class="app-bar-logo">🍮</div>
+          <div style="flex:1">
+            <div class="app-bar-title">Ovito Dulce Manjar</div>
+            <div class="app-bar-sub">Pedidos para negocios · Valle del Chota</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="catalog-header">
+            <div class="catalog-header-title">🛒 Catálogo de Productos</div>
+            <div class="catalog-header-sub">Precios para distribución y reventa</div>
+          </div>
+          <div class="products-grid" id="products-grid">
+
+            <div class="product-card" data-name="Helado de Ovo" data-price="0.80">
+              <div class="product-emoji">🍦</div>
+              <div class="product-name">Helado de Ovo</div>
+              <div class="product-desc">Artesanal, sabor único</div>
+              <div class="product-price">$0.80 / und</div>
+              <div class="qty-row"><button class="qty-btn" data-d="-1">−</button><input class="qty-input" type="number" value="1" min="1" max="9999" step="1"><button class="qty-btn" data-d="1">+</button></div>
+              <button class="select-btn">Agregar al pedido</button>
+            </div>
+
+            <div class="product-card" data-name="Mousse de Ovo" data-price="1.50">
+              <div class="product-emoji">🍮</div>
+              <div class="product-name">Mousse de Ovo</div>
+              <div class="product-desc">Cremoso, 200 g</div>
+              <div class="product-price">$1.50 / und</div>
+              <div class="qty-row"><button class="qty-btn" data-d="-1">−</button><input class="qty-input" type="number" value="1" min="1" max="9999" step="1"><button class="qty-btn" data-d="1">+</button></div>
+              <button class="select-btn">Agregar al pedido</button>
+            </div>
+
+            <div class="product-card" data-name="Mousse de Mango" data-price="1.50">
+              <div class="product-emoji">🥭</div>
+              <div class="product-name">Mousse de Mango</div>
+              <div class="product-desc">Fruta fresca del Chota</div>
+              <div class="product-price">$1.50 / und</div>
+              <div class="qty-row"><button class="qty-btn" data-d="-1">−</button><input class="qty-input" type="number" value="1" min="1" max="9999" step="1"><button class="qty-btn" data-d="1">+</button></div>
+              <button class="select-btn">Agregar al pedido</button>
+            </div>
+
+            <div class="product-card" data-name="Mousse de Mora" data-price="1.50">
+              <div class="product-emoji">🍇</div>
+              <div class="product-name">Mousse de Mora</div>
+              <div class="product-desc">Intenso y natural</div>
+              <div class="product-price">$1.50 / und</div>
+              <div class="qty-row"><button class="qty-btn" data-d="-1">−</button><input class="qty-input" type="number" value="1" min="1" max="9999" step="1"><button class="qty-btn" data-d="1">+</button></div>
+              <button class="select-btn">Agregar al pedido</button>
+            </div>
+
+            <div class="product-card" data-name="Mousse de Maracuyá" data-price="1.50">
+              <div class="product-emoji">🍋</div>
+              <div class="product-name">Mousse Maracuyá</div>
+              <div class="product-desc">Tropical y cremoso</div>
+              <div class="product-price">$1.50 / und</div>
+              <div class="qty-row"><button class="qty-btn" data-d="-1">−</button><input class="qty-input" type="number" value="1" min="1" max="9999" step="1"><button class="qty-btn" data-d="1">+</button></div>
+              <button class="select-btn">Agregar al pedido</button>
+            </div>
+
+            <div class="product-card" data-name="Cupcakes" data-price="1.50">
+              <div class="product-emoji">🧁</div>
+              <div class="product-name">Cupcakes</div>
+              <div class="product-desc">Esponjosos, decorados</div>
+              <div class="product-price">$1.50 / und</div>
+              <div class="qty-row"><button class="qty-btn" data-d="-1">−</button><input class="qty-input" type="number" value="1" min="1" max="9999" step="1"><button class="qty-btn" data-d="1">+</button></div>
+              <button class="select-btn">Agregar al pedido</button>
+            </div>
+
+            <div class="product-card" data-name="Pastel Personalizado" data-price="15.00">
+              <div class="product-emoji">🎂</div>
+              <div class="product-name">Pastel Personalizado</div>
+              <div class="product-desc">A pedido, desde $15</div>
+              <div class="product-price">$15.00 / und</div>
+              <div class="qty-row"><button class="qty-btn" data-d="-1">−</button><input class="qty-input" type="number" value="1" min="1" max="9999" step="1"><button class="qty-btn" data-d="1">+</button></div>
+              <button class="select-btn">Agregar al pedido</button>
+            </div>
+
+            <div class="product-card" data-name='Vino "El Cesto"' data-price="15.00">
+              <div class="product-emoji">🍷</div>
+              <div class="product-name">Vino "El Cesto"</div>
+              <div class="product-desc">Artesanal, 750 ml</div>
+              <div class="product-price">$15.00 / und</div>
+              <div class="qty-row"><button class="qty-btn" data-d="-1">−</button><input class="qty-input" type="number" value="1" min="1" max="9999" step="1"><button class="qty-btn" data-d="1">+</button></div>
+              <button class="select-btn">Agregar al pedido</button>
+            </div>
+
+          </div>
+          <div style="height:70px;"></div>
+        </div>
+        <button class="cart-fab" id="cart-fab" onclick="goToCheckout()" style="display:none;">
+          🛒 Ver pedido
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </div>
+
+      <!-- ── SCREEN 2: CHECKOUT ── -->
+      <div class="screen hidden-right" id="screen-checkout">
+        <div class="app-bar">
+          <button class="app-bar-back" onclick="goBack('screen-catalog','screen-checkout')">←</button>
+          <div class="app-bar-logo">🍮</div>
+          <div>
+            <div class="app-bar-title">Tu Pedido</div>
+            <div class="app-bar-sub">Revisa y confirma</div>
+          </div>
+        </div>
+        <div class="screen-body">
+          <div class="checkout-body">
+            <div class="checkout-card">
+              <div class="checkout-title">📦 Productos seleccionados</div>
+              <div class="cart-list" id="cart-list"></div>
+              <div class="cart-total-row">
+                <span>Total estimado</span>
+                <span id="checkout-total">$0.00</span>
+              </div>
+            </div>
+            <div class="checkout-card">
+              <div class="checkout-title">🏪 Datos del Negocio</div>
+              <div class="form-field">
+                <label class="form-label">Nombre del negocio *</label>
+                <input class="form-input" id="business-name" type="text" placeholder="Ej: Minimarket El Amanecer">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Nombre del propietario / contacto *</label>
+                <input class="form-input" id="contact-name" type="text" placeholder="Ej: Rosa Chalá">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Teléfono / WhatsApp *</label>
+                <input class="form-input" id="customer-phone" type="tel" placeholder="+593 9 9999 9999">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Dirección de entrega *</label>
+                <textarea class="form-textarea" id="delivery-address" placeholder="Ej: Av. El Retorno y Maldonado, local 12, frente al parque central"></textarea>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Ciudad *</label>
+                <select class="form-select" id="city-select" onchange="updateDelivery()">
+                  <option value="">-- Selecciona tu ciudad --</option>
+                  <optgroup label="🔵 Imbabura">
+                    <option>Ibarra</option><option>Otavalo</option><option>Cotacachi</option>
+                    <option>Antonio Ante</option><option>Pimampiro</option>
+                    <option>San Miguel de Urcuquí</option><option>Ambuquí</option>
+                  </optgroup>
+                  <optgroup label="🟣 Carchi">
+                    <option>Tulcán</option><option>Montúfar</option><option>Espejo</option>
+                    <option>Bolívar</option><option>Mira</option><option>Huaca</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div id="delivery-info-wrap" style="display:none;margin-bottom:8px;">
+                <div class="delivery-info">📅 <span id="delivery-text">–</span></div>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Notas adicionales</label>
+                <textarea class="form-textarea" id="notes" placeholder="Ej: Dejar con la señora que atiende en la mañana, empacar en caja especial, etc."></textarea>
+              </div>
+            </div>
+            <button class="btn-mis-pedidos" onclick="openMisPedidos()">📦 Ver historial de pedidos</button>
+            <button class="cta-wa" id="btn-send" onclick="sendOrder()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Enviar Pedido por WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SCREEN 3: WHATSAPP ── -->
+      <div class="screen hidden-right wa-screen" id="screen-whatsapp">
+        <div class="wa-topbar">
+          <button class="wa-back-btn" onclick="goBack('screen-checkout','screen-whatsapp')">←</button>
+          <div class="wa-avatar-sm">🍮</div>
+          <div class="wa-info">
+            <div class="wa-contact-name">Ovito Dulce Manjar</div>
+            <div class="wa-contact-status" id="wa-status-text">en línea</div>
+          </div>
+          <div class="wa-topbar-icons">
+            <button class="wa-icon-btn">📞</button>
+            <button class="wa-icon-btn">⋮</button>
+          </div>
+        </div>
+
+        <div class="payment-banner" id="payment-banner" style="display:none;">
+          ✅ Comprobante recibido — ¡Tu pedido está CONFIRMADO!
+        </div>
+
+        <div class="wa-messages" id="wa-messages">
+          <div class="wa-date-divider"><span class="wa-date-chip">Hoy</span></div>
+        </div>
+
+        <div class="quick-replies" id="quick-replies" style="display:none;"></div>
+
+        <div class="wa-input-bar">
+          <label class="wa-attach-btn" title="Adjuntar comprobante de pago">
+            📎
+            <input type="file" accept="image/*" id="img-upload" onchange="handleImageUpload(event)">
+          </label>
+          <div class="wa-input-wrap">
+            <button class="wa-emoji-btn">😊</button>
+            <textarea class="wa-text-input" id="wa-text-input" placeholder="Escribe un mensaje..." rows="1"
+              onkeydown="handleWaKey(event)" oninput="autoResizeWaInput(this)"></textarea>
+          </div>
+          <button class="wa-send-btn" onclick="sendWaMessage()">➤</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Panel explicativo -->
+  <div class="explanation-panel">
+    <div class="exp-card">
+      <div class="exp-icon">🗺️</div>
+      <div class="exp-title">Rutas Consolidadas</div>
+      <div class="exp-text">El sistema detecta la ciudad y asigna automáticamente el día de entrega. Cubre <strong style="color:var(--gold-lighter)">Imbabura y Carchi</strong>, reduciendo costos hasta un 40%.</div>
+      <div style="margin-top:8px;">
+        <span class="tag">📦 Imbabura → Miércoles</span>
+        <span class="tag">📦 Carchi → Viernes</span>
+      </div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-icon">🏪</div>
+      <div class="exp-title">Solo para Negocios</div>
+      <div class="exp-text">Sistema diseñado para tiendas, minimercados y distribuidores. El formulario captura nombre del negocio, contacto y dirección exacta de entrega para logística eficiente.</div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-icon">💳</div>
+      <div class="exp-title">Pago con Comprobante</div>
+      <div class="exp-text">Dentro del chat de WhatsApp, el cliente adjunta la foto del comprobante de pago. El sistema detecta automáticamente la imagen y confirma el pedido como <strong style="color:var(--gold-lighter)">pagado</strong>.</div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-icon">💬</div>
+      <div class="exp-title">Chat Persistente</div>
+      <div class="exp-text">Si el cliente cierra el chat, el botón flotante de WhatsApp aparece para volver a la conversación sin perder el historial.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════
+     VISTA EMPRESA
+════════════════════════════════ -->
+<div class="view view-empresa" id="view-empresa">
+  <div class="phone-shell">
+    <div class="phone-pill"></div>
+    <div class="empresa-screen-inner">
+      <div class="empresa-topbar">
+        <div class="empresa-topbar-title">📊 Ovito Operaciones</div>
+        <div class="empresa-topbar-sub">Registro de ventas en tiempo real</div>
+      </div>
+      <div class="empresa-kpis">
+        <div class="kpi"><div class="kpi-label">Pedidos hoy</div><div class="kpi-value" id="kpi-pedidos">3</div><div class="kpi-delta">▲ activos</div></div>
+        <div class="kpi blue"><div class="kpi-label">Valor total</div><div class="kpi-value" id="kpi-total">$38.40</div><div class="kpi-delta">▲ acumulado</div></div>
+        <div class="kpi green"><div class="kpi-label">Confirmados</div><div class="kpi-value" id="kpi-conf">1</div><div class="kpi-delta">pagados</div></div>
+        <div class="kpi purple"><div class="kpi-label">Pendientes</div><div class="kpi-value" id="kpi-pend">2</div><div class="kpi-delta">por confirmar</div></div>
+      </div>
+      <div class="empresa-section">
+        <div class="empresa-section-label">
+          Pedidos activos
+          <span class="pulse-dot" id="pulse-dot"></span>
+        </div>
+        <div id="empresa-list">
+          <div class="pedido-card">
+            <div class="pedido-top">
+              <div><div class="pedido-id">#001</div><div class="pedido-nombre">Minimarket Rosa</div><div class="pedido-prod">Mousse de Mango ×2</div></div>
+              <div style="text-align:right"><div class="pedido-hora">10:30</div><div class="pedido-total">$3.00</div></div>
+            </div>
+            <div class="pedido-bottom">
+              <span class="ciudad-chip ciudad-ibarra">📍 Ibarra · Miérc.</span>
+              <span class="status-badge st-pagado">✓ Pagado</span>
+            </div>
+          </div>
+          <div class="pedido-card">
+            <div class="pedido-top">
+              <div><div class="pedido-id">#002</div><div class="pedido-nombre">Tienda Hernán Torres</div><div class="pedido-prod">Mousse Ovo ×5 · Cupcakes ×10</div></div>
+              <div style="text-align:right"><div class="pedido-hora">11:15</div><div class="pedido-total">$22.50</div></div>
+            </div>
+            <div class="pedido-bottom">
+              <span class="ciudad-chip ciudad-tulcan">📍 Tulcán · Viern.</span>
+              <span class="status-badge st-pendiente">⏳ Pendiente</span>
+            </div>
+          </div>
+          <div class="pedido-card">
+            <div class="pedido-top">
+              <div><div class="pedido-id">#003</div><div class="pedido-nombre">Bazar Lucía Benítez</div><div class="pedido-prod">Helado Ovo ×3 · Mousse Mora ×2</div></div>
+              <div style="text-align:right"><div class="pedido-hora">12:00</div><div class="pedido-total">$5.40</div></div>
+            </div>
+            <div class="pedido-bottom">
+              <span class="ciudad-chip ciudad-ibarra">📍 Ibarra · Miérc.</span>
+              <span class="status-badge st-pendiente">⏳ Pendiente</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer class="footer">OVITO DULCE MANJAR · Sistema Digital · Demostración Interactiva</footer>
+
+<button class="wa-fab" id="wa-fab" onclick="reopenWhatsApp()" title="Volver al chat">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="wa-fab-badge" id="wa-fab-badge" style="display:none;">1</span>
+</button>
+
+<div class="modal-overlay" id="modal-pedidos">
+  <div class="pedidos-panel">
+    <div class="pedidos-hdr">
+      <div class="pedidos-hdr-title">📦 Historial de Pedidos</div>
+      <button class="pedidos-close" onclick="closeMisPedidos()">✕</button>
+    </div>
+    <div class="pedidos-body" id="pedidos-body">
+      <div class="no-pedidos-msg">📭 Aún no hay pedidos. ¡Haz tu primer pedido!</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   STATE
+══════════════════════════════════ */
+const state = {
+  cart:[],
+  orders:[],
+  currentOrderId:null,
+  waOpen:false,
+  paymentDone:false,
+  orderCounter:4,
+  empresaPedidos:3,
+  empresaTotal:38.40,
+  empresaConf:1,
+  empresaPend:2,
+  empresaCounter:4,
+  /* track conversation stage for dynamic quick replies */
+  chatStage:'idle', // idle | order_sent | awaiting_payment | confirmed | chatting
+  lastBotTopic:null,
+};
+
+const imbabura=['Ibarra','Otavalo','Cotacachi','Antonio Ante','Pimampiro','San Miguel de Urcuquí','Ambuquí'];
+const carchi=['Tulcán','Montúfar','Espejo','Bolívar','Mira','Huaca'];
+
+/* ══════════════════════════════════
+   DYNAMIC QUICK REPLIES
+══════════════════════════════════ */
+const qrSets = {
+  order_sent:[
+    {label:'¿Cómo pagar?', topic:'pago'},
+    {label:'¿Cuándo llega?', topic:'entrega'},
+    {label:'Modificar mi pedido', topic:'modificar'},
+    {label:'Ver resumen del pedido', topic:'resumen'},
+  ],
+  awaiting_payment:[
+    {label:'Ya realicé el pago 💸', topic:'confirmar_pago'},
+    {label:'¿Cuánto tiempo tengo?', topic:'plazo_pago'},
+    {label:'¿Qué métodos acepta?', topic:'metodos_pago'},
+    {label:'Tengo un problema', topic:'problema'},
+  ],
+  after_pago:[
+    {label:'¿Cuándo me entregan?', topic:'entrega'},
+    {label:'¿Puedo agregar más productos?', topic:'agregar'},
+    {label:'Necesito factura', topic:'factura'},
+    {label:'Quiero otro pedido', topic:'nuevo_pedido'},
+  ],
+  confirmed:[
+    {label:'Estado de mi pedido', topic:'estado'},
+    {label:'Cambiar dirección', topic:'cambiar_direccion'},
+    {label:'Quiero hacer otro pedido', topic:'nuevo_pedido'},
+    {label:'Contactar a soporte', topic:'soporte'},
+  ],
+  modificar:[
+    {label:'Agregar productos', topic:'agregar'},
+    {label:'Quitar productos', topic:'quitar'},
+    {label:'Cambiar dirección', topic:'cambiar_direccion'},
+    {label:'Cancelar pedido', topic:'cancelar'},
+  ],
+  entrega:[
+    {label:'Confirmar mi dirección', topic:'confirmar_dir'},
+    {label:'Cambiar día de entrega', topic:'cambiar_dia'},
+    {label:'¿Cómo me avisan?', topic:'aviso_entrega'},
+    {label:'Volver al menú', topic:'menu_principal'},
+  ],
+  default:[
+    {label:'¿Cómo pagar?', topic:'pago'},
+    {label:'Estado de pedido', topic:'estado'},
+    {label:'Hablar con un humano', topic:'humano'},
+    {label:'Nuevo pedido', topic:'nuevo_pedido'},
+  ],
+};
+
+function setQuickReplies(setKey){
+  const container = document.getElementById('quick-replies');
+  const chips = qrSets[setKey] || qrSets.default;
+  container.innerHTML='';
+  chips.forEach((c,i)=>{
+    const el=document.createElement('span');
+    el.className='qr-chip';
+    el.textContent=c.label;
+    el.dataset.topic=c.topic;
+    el.style.animationDelay=(i*0.06)+'s';
+    el.addEventListener('click',()=>handleQuickReply(c.label, c.topic));
+    container.appendChild(el);
+  });
+  container.style.display='flex';
+}
+
+function handleQuickReply(label, topic){
+  const now=getTime();
+  addBubble('sent',label,now);
+  state.lastBotTopic=topic;
+  triggerBotReply(label, topic, now);
+}
+
+/* ══════════════════════════════════
+   NAVIGATION
+══════════════════════════════════ */
+function switchView(v){
+  ['mobile','empresa'].forEach(x=>{
+    document.getElementById('view-'+x).classList.remove('active');
+    document.getElementById('btn-'+x).classList.remove('active');
+  });
+  document.getElementById('view-'+v).classList.add('active');
+  document.getElementById('btn-'+v).classList.add('active');
+}
+
+function goToScreen(from,to){
+  const f=document.getElementById(from), t=document.getElementById(to);
+  f.classList.remove('active'); f.classList.add('hidden-left');
+  t.classList.remove('hidden-right','hidden-left'); t.classList.add('active');
+}
+function goBack(to,from){
+  const f=document.getElementById(from), t=document.getElementById(to);
+  f.classList.remove('active'); f.classList.add('hidden-right');
+  t.classList.remove('hidden-left','hidden-right'); t.classList.add('active');
+  if(from==='screen-whatsapp'){
+    state.waOpen=false;
+    if(state.orders.length>0) showFab();
+  }
+  if(to==='screen-whatsapp'){state.waOpen=true; hideFab();}
+}
+
+function goToCheckout(){ renderCheckout(); goToScreen('screen-catalog','screen-checkout'); }
+
+/* ══════════════════════════════════
+   QTY CONTROLS
+══════════════════════════════════ */
+document.querySelectorAll('.qty-btn').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    const inp=btn.parentElement.querySelector('.qty-input');
+    let v=parseInt(inp.value)||1;
+    v+=parseInt(btn.dataset.d);
+    if(v<1)v=1; if(v>9999)v=9999;
+    inp.value=v;
+    const card=btn.closest('.product-card');
+    if(card.classList.contains('selected')){
+      const item=state.cart.find(i=>i.name===card.dataset.name);
+      if(item) item.qty=v;
+      updateCartFab();
+    }
+  });
+});
+
+document.querySelectorAll('.qty-input').forEach(inp=>{
+  inp.addEventListener('input',()=>{
+    let v=inp.value.replace(/[^0-9]/g,'');
+    if(v==='') v='1';
+    inp.value=parseInt(v)||1;
+    const card=inp.closest('.product-card');
+    if(card&&card.classList.contains('selected')){
+      const item=state.cart.find(i=>i.name===card.dataset.name);
+      if(item) item.qty=parseInt(v)||1;
+      updateCartFab();
+    }
+  });
+});
+
+document.querySelectorAll('.product-card').forEach(card=>{
+  card.addEventListener('click',e=>{
+    if(e.target.classList.contains('qty-btn')||e.target.classList.contains('qty-input')) return;
+    const name=card.dataset.name, price=parseFloat(card.dataset.price);
+    const qty=parseInt(card.querySelector('.qty-input').value)||1;
+    const idx=state.cart.findIndex(i=>i.name===name);
+    if(idx>=0){
+      state.cart.splice(idx,1);
+      card.classList.remove('selected');
+      card.querySelector('.select-btn').textContent='Agregar al pedido';
+    } else {
+      state.cart.push({name,price,qty});
+      card.classList.add('selected');
+      card.querySelector('.select-btn').textContent='✓ En tu pedido';
+    }
+    updateCartFab();
+  });
+});
+
+function updateCartFab(){
+  const fab=document.getElementById('cart-fab'), cnt=document.getElementById('cart-count');
+  if(state.cart.length>0){fab.style.display='flex'; cnt.textContent=state.cart.length;}
+  else fab.style.display='none';
+}
+
+/* ══════════════════════════════════
+   CHECKOUT RENDER
+══════════════════════════════════ */
+function renderCheckout(){
+  const list=document.getElementById('cart-list');
+  list.innerHTML='';
+  let total=0;
+  state.cart.forEach(item=>{
+    const sub=item.price*item.qty; total+=sub;
+    const d=document.createElement('div');
+    d.className='cart-item-row';
+    d.innerHTML=`<span class="ci-name">${item.name}</span><span class="ci-qty">×${item.qty}</span><span class="ci-price">$${sub.toFixed(2)}</span><button class="ci-del" onclick="removeItem('${escAttr(item.name)}')">✕</button>`;
+    list.appendChild(d);
+  });
+  document.getElementById('checkout-total').textContent='$'+total.toFixed(2);
+}
+function escAttr(s){return s.replace(/'/g,"\\'");}
+function removeItem(name){
+  state.cart=state.cart.filter(i=>i.name!==name);
+  document.querySelectorAll('.product-card').forEach(c=>{
+    if(c.dataset.name===name){c.classList.remove('selected');c.querySelector('.select-btn').textContent='Agregar al pedido';}
+  });
+  updateCartFab(); renderCheckout();
+  if(state.cart.length===0) goBack('screen-catalog','screen-checkout');
+}
+
+/* ══════════════════════════════════
+   DELIVERY
+══════════════════════════════════ */
+function updateDelivery(){
+  const city=document.getElementById('city-select').value;
+  const wrap=document.getElementById('delivery-info-wrap'), txt=document.getElementById('delivery-text');
+  if(!city){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  if(imbabura.includes(city)) txt.innerHTML='<strong>Entregas los miércoles</strong> · Ruta Imbabura consolidada';
+  else if(carchi.includes(city)) txt.innerHTML='<strong>Entregas los viernes</strong> · Ruta Carchi consolidada';
+}
+function getDeliveryDay(city){
+  if(imbabura.includes(city)) return 'miércoles'; if(carchi.includes(city)) return 'viernes'; return 'por confirmar';
+}
+
+/* ══════════════════════════════════
+   HELPERS
+══════════════════════════════════ */
+function getTime(){
+  const n=new Date(); return n.getHours()+':'+String(n.getMinutes()).padStart(2,'0');
+}
+
+/* Build rich HTML for WA bubble content */
+function buildRichBubble(sections){
+  return sections.map(s=>{
+    if(s.type==='header') return `<div class="msg-section"><div class="msg-header">${s.emoji||''} ${s.text}</div></div>`;
+    if(s.type==='list') return `<div class="msg-section">${s.items.map(i=>`<div class="msg-row"><span class="bullet">•</span><span>${i}</span></div>`).join('')}</div>`;
+    if(s.type==='highlight') return `<div class="msg-section"><div class="msg-highlight">${s.text}</div></div>`;
+    if(s.type==='total') return `<div class="msg-section"><div class="msg-total"><span>${s.label}</span><span>${s.value}</span></div></div>`;
+    if(s.type==='pills') return `<div class="msg-section">${s.items.map(i=>`<span class="msg-pill ${i.color||'green'}">${i.text}</span>`).join('')}</div>`;
+    if(s.type==='divider') return '<div class="msg-divider"></div>';
+    if(s.type==='text') return `<div class="msg-section"><div class="msg-row"><span>${s.text}</span></div></div>`;
+    return '';
+  }).join('');
+}
+
+/* ══════════════════════════════════
+   SEND ORDER
+══════════════════════════════════ */
+function sendOrder(){
+  const biz=document.getElementById('business-name').value.trim();
+  const cname=document.getElementById('contact-name').value.trim();
+  const phone=document.getElementById('customer-phone').value.trim();
+  const addr=document.getElementById('delivery-address').value.trim();
+  const city=document.getElementById('city-select').value;
+  const notes=document.getElementById('notes').value.trim();
+  if(!biz){alert('Por favor ingresa el nombre del negocio.');return;}
+  if(!cname){alert('Por favor ingresa el nombre del contacto.');return;}
+  if(!phone){alert('Por favor ingresa el teléfono.');return;}
+  if(!addr){alert('Por favor ingresa la dirección de entrega.');return;}
+  if(!city){alert('Por favor selecciona tu ciudad.');return;}
+  if(state.cart.length===0){alert('El carrito está vacío.');return;}
+
+  const delivery=getDeliveryDay(city);
+  const total=state.cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const timeStr=getTime();
+  const orderId=state.orderCounter++;
+  state.currentOrderId=orderId;
+  state.orders.push({id:orderId,biz,cname,phone,addr,city,notes,items:[...state.cart],total,delivery,status:'pendiente',hora:timeStr});
+
+  goToScreen('screen-checkout','screen-whatsapp');
+  state.waOpen=true; hideFab();
+
+  /* Clear chat */
+  const msgs=document.getElementById('wa-messages');
+  msgs.innerHTML='<div class="wa-date-divider"><span class="wa-date-chip">Hoy</span></div>';
+  document.getElementById('payment-banner').style.display='none';
+  document.getElementById('quick-replies').style.display='none';
+  state.paymentDone=false;
+  state.chatStage='order_sent';
+
+  /* Show outgoing order summary as rich bubble */
+  const summaryHTML=buildRichBubble([
+    {type:'header', emoji:'🍮', text:'Nuevo Pedido – Ovito Dulce Manjar'},
+    {type:'list', items: state.cart.map(i=>`${i.name} ×${i.qty} — $${(i.price*i.qty).toFixed(2)}`)},
+    {type:'total', label:'Total', value:'$'+total.toFixed(2)},
+    {type:'divider'},
+    {type:'list', items:[`🏪 ${biz}`, `👤 ${cname}`, `📱 ${phone}`, `📍 ${addr}`, `🌆 ${city}`, `📅 Entrega: ${delivery}`].concat(notes?[`📝 ${notes}`]:[])},
+  ]);
+  addRichBubble('sent', summaryHTML, timeStr);
+
+  setTimeout(()=>{ document.getElementById('wa-status-text').textContent='escribiendo...'; }, 600);
+  setTimeout(()=>{
+    document.getElementById('wa-status-text').textContent='en línea';
+
+    const firstName=cname.split(' ')[0];
+    const replyHTML=buildRichBubble([
+      {type:'header', emoji:'👋', text:`¡Hola ${firstName}! Recibimos tu pedido`},
+      {type:'text', text:`Tu pedido para <strong>${biz}</strong> está registrado correctamente.`},
+      {type:'pills', items:[{text:`Total: $${total.toFixed(2)}`,color:'green'},{text:`Entrega: ${delivery}`,color:'amber'}]},
+      {type:'divider'},
+      {type:'header', emoji:'💳', text:'Opciones de pago'},
+      {type:'list', items:[
+        '<strong>Banco Pichincha</strong> · Cta. 2200123456-04 · Titular: Ovito Dulce Manjar',
+        '<strong>Nequi EC / PayPhone</strong> · +593 99 123 4567',
+      ]},
+      {type:'highlight', text:'📸 Adjunta aquí la foto del comprobante para confirmar tu pedido al instante.'},
+    ]);
+    addRichBubble('received', replyHTML, timeStr);
+    state.chatStage='awaiting_payment';
+    setQuickReplies('awaiting_payment');
+
+    injectEmpresa({id:orderId,biz,city,items:[...state.cart],total,hora:timeStr});
+    state.cart=[];
+    document.querySelectorAll('.product-card.selected').forEach(c=>{
+      c.classList.remove('selected');
+      c.querySelector('.select-btn').textContent='Agregar al pedido';
+      c.querySelector('.qty-input').value=1;
+    });
+    updateCartFab();
+  },2200);
+}
+
+/* ══════════════════════════════════
+   WA BUBBLE RENDERING
+══════════════════════════════════ */
+function addBubble(type, text, time){
+  const msgs=document.getElementById('wa-messages');
+  const ti=document.getElementById('typing-indicator'); if(ti) ti.remove();
+  const div=document.createElement('div');
+  div.className='wa-bubble '+type;
+  const escaped=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+  const ticks=type==='sent'?'<span class="ticks">✓✓</span>':'';
+  div.innerHTML=`${escaped}<div class="btime">${time} ${ticks}</div>`;
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function addRichBubble(type, innerHTML, time){
+  const msgs=document.getElementById('wa-messages');
+  const ti=document.getElementById('typing-indicator'); if(ti) ti.remove();
+  const div=document.createElement('div');
+  div.className='wa-bubble '+type;
+  const ticks=type==='sent'?'<span class="ticks">✓✓</span>':'';
+  div.innerHTML=innerHTML+`<div class="btime">${time} ${ticks}</div>`;
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function showTyping(){
+  const msgs=document.getElementById('wa-messages');
+  const t=document.getElementById('typing-indicator'); if(t) t.remove();
+  const typing=document.createElement('div');
+  typing.className='typing-indicator show'; typing.id='typing-indicator';
+  typing.innerHTML='<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  msgs.appendChild(typing); msgs.scrollTop=msgs.scrollHeight;
+}
+
+/* ══════════════════════════════════
+   BOT REPLY ENGINE (structured)
+══════════════════════════════════ */
+function triggerBotReply(userText, topic, time){
+  showTyping();
+  document.getElementById('wa-status-text').textContent='escribiendo...';
+  const delay=1200+Math.random()*600;
+  setTimeout(()=>{
+    document.getElementById('wa-status-text').textContent='en línea';
+    const {html, nextStage, nextQR}=buildBotReply(userText, topic||'');
+    addRichBubble('received', html, time);
+    if(nextStage) state.chatStage=nextStage;
+    if(nextQR) setQuickReplies(nextQR);
+  }, delay);
+}
+
+function buildBotReply(userText, topic){
+  const lower=userText.toLowerCase();
+  let html, nextStage=null, nextQR=null;
+
+  /* Topic-based rich replies */
+  if(topic==='pago' || lower.includes('pago') || lower.includes('pagar') || lower.includes('transferencia')){
+    html=buildRichBubble([
+      {type:'header', emoji:'💳', text:'Métodos de pago disponibles'},
+      {type:'list', items:[
+        '<strong>Banco Pichincha</strong> · Ahorro · Cta. 2200123456-04',
+        '<strong>PayPhone</strong> · +593 99 123 4567',
+        '<strong>Nequi EC</strong> · +593 99 123 4567',
+        '<strong>Efectivo</strong> · Solo en la entrega',
+      ]},
+      {type:'highlight', text:'📸 Una vez que pagues, envíanos la foto del comprobante aquí y confirmamos tu pedido en minutos.'},
+      {type:'pills', items:[{text:'Transferencia',color:'blue'},{text:'Digital',color:'green'},{text:'Efectivo',color:'amber'}]},
+    ]);
+    nextQR='awaiting_payment';
+  }
+  else if(topic==='entrega' || lower.includes('entrega') || lower.includes('llega') || lower.includes('cuándo')){
+    const o=state.orders.find(x=>x.id===state.currentOrderId);
+    const city=o?o.city:'tu ciudad';
+    const day=o?o.delivery:'el día asignado';
+    html=buildRichBubble([
+      {type:'header', emoji:'🚚', text:'Información de entrega'},
+      {type:'list', items:[
+        `📍 Ciudad: <strong>${city}</strong>`,
+        `📅 Día de entrega: <strong>${day}</strong>`,
+        '⏰ Horario: 9:00 AM – 5:00 PM',
+        '📦 Te avisamos por WhatsApp antes de salir',
+      ]},
+      {type:'highlight', text:'Si necesitas cambiar la dirección o el día, escríbenos con al menos 24h de anticipación.'},
+    ]);
+    nextQR='entrega';
+  }
+  else if(topic==='modificar' || lower.includes('modificar') || lower.includes('cambiar pedido') || lower.includes('modificar pedido')){
+    html=buildRichBubble([
+      {type:'header', emoji:'✏️', text:'Modificar tu pedido'},
+      {type:'text', text:'Puedes hacer cambios mientras tu pedido no esté confirmado (pago pendiente).'},
+      {type:'list', items:[
+        'Agregar o quitar productos',
+        'Cambiar dirección de entrega',
+        'Actualizar cantidad de un artículo',
+      ]},
+      {type:'highlight', text:'⚠️ Una vez confirmado el pago, ya no se pueden hacer cambios al pedido.'},
+      {type:'pills', items:[{text:'Sin cargo extra',color:'green'}]},
+    ]);
+    nextQR='modificar';
+  }
+  else if(topic==='resumen'){
+    const o=state.orders.find(x=>x.id===state.currentOrderId);
+    if(o){
+      html=buildRichBubble([
+        {type:'header', emoji:'📋', text:'Resumen de tu pedido'},
+        {type:'list', items:o.items.map(i=>`${i.name} ×${i.qty} — $${(i.price*i.qty).toFixed(2)}`)},
+        {type:'total', label:'Total', value:'$'+o.total.toFixed(2)},
+        {type:'divider'},
+        {type:'pills', items:[{text:o.city,color:'blue'},{text:'Entrega: '+o.delivery,color:'amber'},{text:o.status==='pagado'?'✓ Pagado':'⏳ Pendiente',color:o.status==='pagado'?'green':'amber'}]},
+      ]);
+    } else {
+      html=buildRichBubble([{type:'text', text:'No encontré un pedido activo en este momento.'}]);
+    }
+    nextQR=state.chatStage==='confirmed'?'confirmed':'awaiting_payment';
+  }
+  else if(topic==='confirmar_pago' || lower.includes('ya pagué') || lower.includes('realicé el pago')){
+    html=buildRichBubble([
+      {type:'header', emoji:'⏳', text:'Revisando tu pago…'},
+      {type:'text', text:'Gracias por avisarnos. Para confirmar tu pago al instante:'},
+      {type:'highlight', text:'📎 Presiona el clip (📎) en la barra de abajo y adjunta la foto de tu comprobante de pago.'},
+      {type:'list', items:[
+        'Captura de pantalla de la transferencia',
+        'Foto del voucher físico',
+        'Screenshot de Nequi o PayPhone',
+      ]},
+    ]);
+    nextQR='awaiting_payment';
+  }
+  else if(topic==='plazo_pago' || lower.includes('plazo') || lower.includes('tiempo tengo')){
+    html=buildRichBubble([
+      {type:'header', emoji:'⏰', text:'Plazo para confirmar tu pago'},
+      {type:'list', items:[
+        '✅ Tienes <strong>24 horas</strong> para enviar el comprobante',
+        '📅 Si tu entrega es el miércoles, paga antes del martes a las 5 PM',
+        '📅 Si tu entrega es el viernes, paga antes del jueves a las 5 PM',
+      ]},
+      {type:'highlight', text:'Si el pago no se confirma a tiempo, el pedido se cancela automáticamente.'},
+    ]);
+    nextQR='awaiting_payment';
+  }
+  else if(topic==='metodos_pago' || lower.includes('métodos') || lower.includes('formas de pago')){
+    html=buildRichBubble([
+      {type:'header', emoji:'💳', text:'Formas de pago aceptadas'},
+      {type:'list', items:[
+        '🏦 <strong>Banco Pichincha</strong> — Transferencia o depósito',
+        '📱 <strong>PayPhone</strong> — Pago digital inmediato',
+        '📲 <strong>Nequi EC</strong> — Billetera digital',
+        '💵 <strong>Efectivo</strong> — Solo en el momento de entrega',
+      ]},
+      {type:'pills', items:[{text:'Sin recargo extra',color:'green'},{text:'Inmediato',color:'blue'}]},
+    ]);
+    nextQR='awaiting_payment';
+  }
+  else if(topic==='problema' || lower.includes('problema') || lower.includes('error') || lower.includes('falla')){
+    html=buildRichBubble([
+      {type:'header', emoji:'🛠️', text:'¡Estamos aquí para ayudarte!'},
+      {type:'text', text:'Cuéntanos qué problema tienes y lo resolvemos enseguida.'},
+      {type:'list', items:[
+        '📞 Llamada directa: +593 99 123 4567',
+        '⏰ Atención: Lunes a Sábado, 8 AM – 7 PM',
+      ]},
+      {type:'highlight', text:'Si es urgente, escríbenos aquí mismo y un asesor te responderá en menos de 10 minutos.'},
+    ]);
+    nextQR='default';
+  }
+  else if(topic==='factura' || lower.includes('factura') || lower.includes('facturar')){
+    html=buildRichBubble([
+      {type:'header', emoji:'🧾', text:'Facturación'},
+      {type:'text', text:'Podemos emitir factura electrónica. Necesitamos:'},
+      {type:'list', items:[
+        'RUC o cédula del negocio',
+        'Razón social exacta',
+        'Correo electrónico para recibir la factura',
+      ]},
+      {type:'highlight', text:'Las facturas se envían dentro de las 24h siguientes a la entrega confirmada.'},
+    ]);
+    nextQR=state.chatStage==='confirmed'?'confirmed':'after_pago';
+  }
+  else if(topic==='nuevo_pedido' || lower.includes('nuevo pedido') || lower.includes('otro pedido')){
+    html=buildRichBubble([
+      {type:'header', emoji:'🛒', text:'Hacer un nuevo pedido'},
+      {type:'text', text:'Para hacer un nuevo pedido, ve al catálogo y selecciona los productos que necesitas.'},
+      {type:'highlight', text:'💡 Toca el botón "←" para volver al catálogo y armar tu nuevo pedido.'},
+      {type:'pills', items:[{text:'Catálogo disponible',color:'green'},{text:'Pedido mínimo $5',color:'amber'}]},
+    ]);
+    nextQR='order_sent';
+  }
+  else if(topic==='estado' || lower.includes('estado') || lower.includes('mi pedido')){
+    const o=state.orders.find(x=>x.id===state.currentOrderId);
+    const isPaid=o&&o.status==='pagado';
+    html=buildRichBubble([
+      {type:'header', emoji:'📦', text:'Estado de tu pedido'},
+      {type:'pills', items:[{text:isPaid?'✓ Pago confirmado':'⏳ Pago pendiente',color:isPaid?'green':'amber'},{text:o?o.city:'—',color:'blue'}]},
+      {type:'list', items:[
+        isPaid?'✅ Pedido confirmado y en preparación':'⏳ Esperando comprobante de pago',
+        `📅 Entrega programada: ${o?o.delivery:'por confirmar'}`,
+        `💰 Total: ${o?'$'+o.total.toFixed(2):'—'}`,
+      ]},
+      {type:'highlight', text: isPaid?'Tu pedido está en preparación. Te avisaremos antes de la entrega.':'Recuerda enviar tu comprobante de pago para confirmar el pedido.'},
+    ]);
+    nextQR=isPaid?'confirmed':'awaiting_payment';
+  }
+  else if(topic==='soporte' || topic==='humano' || lower.includes('humano') || lower.includes('persona') || lower.includes('asesor')){
+    html=buildRichBubble([
+      {type:'header', emoji:'👩‍💼', text:'Conectar con un asesor'},
+      {type:'text', text:'Te conectaremos con un miembro del equipo de Ovito Dulce Manjar.'},
+      {type:'list', items:[
+        '📞 +593 99 123 4567',
+        '⏰ Lunes a Sábado · 8 AM – 7 PM',
+        '💬 Tiempo de respuesta: ~10 min',
+      ]},
+      {type:'highlight', text:'Fuera de horario, déjanos tu mensaje y te respondemos a primera hora.'},
+    ]);
+    nextQR='default';
+  }
+  else if(topic==='agregar' || lower.includes('agregar') || lower.includes('añadir')){
+    html=buildRichBubble([
+      {type:'header', emoji:'➕', text:'Agregar productos al pedido'},
+      {type:'text', text:'Puedes agregar productos mientras el pedido esté pendiente de pago.'},
+      {type:'highlight', text:'💡 Vuelve al catálogo (botón "←"), selecciona los productos adicionales y envía un nuevo mensaje.'},
+      {type:'pills', items:[{text:'Sin cargo adicional de envío',color:'green'}]},
+    ]);
+    nextQR='modificar';
+  }
+  else if(topic==='cancelar' || lower.includes('cancelar')){
+    html=buildRichBubble([
+      {type:'header', emoji:'❌', text:'Cancelar pedido'},
+      {type:'text', text:'Puedes cancelar tu pedido sin costo mientras no haya sido confirmado.'},
+      {type:'list', items:[
+        '✅ Cancelación gratuita (pago no confirmado)',
+        '⚠️ Si ya pagaste, revisamos caso a caso',
+        '📞 Para cancelar, contáctanos directamente',
+      ]},
+      {type:'highlight', text:'¿Seguro que deseas cancelar? Escríbenos "Confirmar cancelación" o dinos si fue un error.'},
+    ]);
+    nextQR='default';
+  }
+  else if(topic==='cambiar_direccion' || lower.includes('dirección') || lower.includes('cambiar dirección')){
+    html=buildRichBubble([
+      {type:'header', emoji:'📍', text:'Cambiar dirección de entrega'},
+      {type:'text', text:'Envíanos la nueva dirección y la actualizamos sin problema.'},
+      {type:'list', items:[
+        'Debe ser la misma ciudad del pedido original',
+        'Solo antes de la confirmación del pago',
+        'Envía: Calle, número, referencia y ciudad',
+      ]},
+    ]);
+    nextQR='modificar';
+  }
+  else if(lower.includes('gracias') || lower.includes('ok') || lower.includes('listo') || lower.includes('perfecto')){
+    html=buildRichBubble([
+      {type:'text', text:'¡Con mucho gusto! 🍮 Estamos para lo que necesites.'},
+      {type:'pills', items:[{text:'Pedido activo',color:'green'},{text:'Ovito Dulce Manjar',color:'amber'}]},
+    ]);
+    nextQR=state.chatStage==='confirmed'?'confirmed':'awaiting_payment';
+  }
+  else if(lower.includes('hola') || lower.includes('buenas') || lower.includes('buenos')){
+    html=buildRichBubble([
+      {type:'text', text:'¡Hola! 👋 Bienvenido a <strong>Ovito Dulce Manjar</strong>. ¿En qué te podemos ayudar hoy?'},
+      {type:'list', items:['Ver estado de tu pedido','Información de pagos','Cambios y modificaciones','Hacer un nuevo pedido']},
+    ]);
+    nextQR=state.chatStage==='confirmed'?'confirmed':'awaiting_payment';
+  }
+  else {
+    html=buildRichBubble([
+      {type:'text', text:'Recibimos tu mensaje. Un momento por favor… 🙏'},
+      {type:'highlight', text:'Si necesitas ayuda inmediata, usa las opciones rápidas de abajo o escríbenos directamente.'},
+    ]);
+    nextQR=state.chatStage==='confirmed'?'confirmed':'awaiting_payment';
+  }
+
+  return {html, nextStage, nextQR};
+}
+
+/* ══════════════════════════════════
+   WA CHAT INPUT
+══════════════════════════════════ */
+function sendWaMessage(){
+  const inp=document.getElementById('wa-text-input');
+  const text=inp.value.trim(); if(!text) return;
+  const t=getTime();
+  addBubble('sent',text,t);
+  inp.value=''; inp.style.height='auto';
+  triggerBotReply(text,null,t);
+}
+function handleWaKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendWaMessage();} }
+function autoResizeWaInput(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,80)+'px'; }
+
+/* ══════════════════════════════════
+   IMAGE UPLOAD (payment)
+══════════════════════════════════ */
+function handleImageUpload(e){
+  const file=e.target.files[0]; if(!file) return;
+  const input=e.target;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    /* Capture result immediately before input is cleared */
+    const dataUrl=ev.target.result;
+    const t=getTime();
+    const msgs=document.getElementById('wa-messages');
+
+    /* Build image bubble using DOM API to avoid innerHTML issues with data URLs */
+    const div=document.createElement('div');
+    div.className='wa-img-bubble';
+    const img=document.createElement('img');
+    img.src=dataUrl;
+    img.alt='Comprobante';
+    const caption=document.createElement('div');
+    caption.className='img-caption';
+    caption.textContent='Comprobante de pago';
+    const btime=document.createElement('div');
+    btime.className='btime';
+    btime.innerHTML=t+' <span style="color:#53bdeb">'+String.fromCharCode(10003)+String.fromCharCode(10003)+'</span>';
+    div.appendChild(img);
+    div.appendChild(caption);
+    div.appendChild(btime);
+    msgs.appendChild(div);
+    msgs.scrollTop=msgs.scrollHeight;
+
+    /* Reset input only after bubble is appended */
+    setTimeout(()=>{ input.value=''; }, 200);
+
+    setTimeout(()=>{
+      const html=buildRichBubble([
+        {type:'header', emoji:'✅', text:'Pago confirmado!'},
+        {type:'text', text:'Hemos verificado tu comprobante. Tu pedido está <strong>confirmado</strong> y en preparación. 🎉'},
+        {type:'list', items:[
+          'Entrega programada según tu ruta asignada',
+          'Te notificaremos antes de salir a entregar',
+          'Si tienes dudas: +593 99 123 4567',
+        ]},
+        {type:'pills', items:[{text:'Pedido confirmado',color:'green'},{text:'En preparación',color:'blue'}]},
+      ]);
+      addRichBubble('received', html, t);
+      document.getElementById('payment-banner').style.display='flex';
+      state.paymentDone=true; state.chatStage='confirmed';
+      setQuickReplies('confirmed');
+
+      if(state.currentOrderId!==null){
+        const o=state.orders.find(x=>x.id===state.currentOrderId);
+        if(o) o.status='pagado';
+        updateEmpresaPayment(state.currentOrderId);
+      }
+      state.empresaConf++; state.empresaPend=Math.max(0,state.empresaPend-1);
+      document.getElementById('kpi-conf').textContent=state.empresaConf;
+      document.getElementById('kpi-pend').textContent=state.empresaPend;
+    },1800);
+  };
+  reader.readAsDataURL(file);
+}
+
+function updateEmpresaPayment(orderId){
+  document.querySelectorAll('#empresa-list .pedido-card').forEach(c=>{
+    const id=c.querySelector('.pedido-id');
+    if(id&&id.textContent==='#00'+orderId){
+      const badge=c.querySelector('.status-badge');
+      if(badge){badge.className='status-badge st-pagado'; badge.textContent='✓ Pagado';}
+    }
+  });
+}
+
+/* ══════════════════════════════════
+   WA FAB
+══════════════════════════════════ */
+function showFab(){ document.getElementById('wa-fab').classList.add('visible'); document.getElementById('wa-fab-badge').style.display='flex'; }
+function hideFab(){ document.getElementById('wa-fab').classList.remove('visible'); }
+function reopenWhatsApp(){
+  switchView('mobile');
+  ['screen-catalog','screen-checkout'].forEach(s=>{ const el=document.getElementById(s); el.classList.remove('active'); el.classList.add('hidden-left'); });
+  const wa=document.getElementById('screen-whatsapp');
+  wa.classList.remove('hidden-right','hidden-left'); wa.classList.add('active');
+  hideFab(); state.waOpen=true;
+}
+
+/* ══════════════════════════════════
+   MIS PEDIDOS
+══════════════════════════════════ */
+function openMisPedidos(){
+  const body=document.getElementById('pedidos-body');
+  if(state.orders.length===0){
+    body.innerHTML='<div class="no-pedidos-msg">📭 Aún no hay pedidos. ¡Haz tu primer pedido!</div>';
+  } else {
+    body.innerHTML='';
+    [...state.orders].reverse().forEach(o=>{
+      const det=o.items.map(i=>`${i.name} ×${i.qty}`).join(', ');
+      const d=document.createElement('div');
+      d.className=`pedido-hist-item ${o.status}`;
+      d.innerHTML=`
+        <div class="phi-top">
+          <div><div class="phi-num">#00${o.id} · ${o.hora}</div><div class="phi-prod">${det}</div><div class="phi-city">🏪 ${o.biz} · 📍 ${o.city} · ${o.delivery}</div></div>
+          <div class="phi-total">$${o.total.toFixed(2)}</div>
+        </div>
+        <span class="phi-badge ${o.status==='pagado'?'badge-pagado':'badge-pendiente'}">${o.status==='pagado'?'✓ Pagado':'⏳ Pendiente de pago'}</span>`;
+      body.appendChild(d);
+    });
+  }
+  document.getElementById('modal-pedidos').classList.add('active');
+}
+function closeMisPedidos(){ document.getElementById('modal-pedidos').classList.remove('active'); }
+
+/* ══════════════════════════════════
+   EMPRESA INJECT
+══════════════════════════════════ */
+function injectEmpresa(order){
+  const list=document.getElementById('empresa-list');
+  const det=order.items.map(i=>`${i.name} ×${i.qty}`).join(' · ');
+  const isImb=imbabura.includes(order.city);
+  const cityClass=isImb?'ciudad-ibarra':'ciudad-tulcan';
+  const cityLabel=`📍 ${order.city} · ${isImb?'Miérc.':'Viern.'}`;
+  const d=document.createElement('div');
+  d.className='pedido-card nuevo';
+  d.innerHTML=`
+    <div class="pedido-top">
+      <div><div class="pedido-id">#00${order.id}</div><div class="pedido-nombre">${order.biz}</div><div class="pedido-prod">${det}</div></div>
+      <div style="text-align:right"><div class="pedido-hora">${order.hora}</div><div class="pedido-total">$${order.total.toFixed(2)}</div></div>
+    </div>
+    <div class="pedido-bottom">
+      <span class="ciudad-chip ${cityClass}">${cityLabel}</span>
+      <span class="status-badge st-pendiente">⏳ Pendiente</span>
+    </div>`;
+  list.insertBefore(d,list.firstChild);
+  state.empresaPedidos++; state.empresaTotal+=order.total; state.empresaPend++;
+  document.getElementById('kpi-pedidos').textContent=state.empresaPedidos;
+  document.getElementById('kpi-total').textContent='$'+state.empresaTotal.toFixed(2);
+  document.getElementById('kpi-pend').textContent=state.empresaPend;
+  const dot=document.getElementById('pulse-dot');
+  dot.style.display='inline-block';
+  setTimeout(()=>dot.style.display='none',6000);
+}
+</script>
+</body>
+</html>
